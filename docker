@@ -1,0 +1,12 @@
+CONTAINER ID        IMAGE               CREATED AT                      NAMES
+b1afbc981796        ubuntu:16.04        2019-06-06 16:18:57 +0300 MSK   competent_wilbur
+24478f831904        ubuntu:16.04        2019-06-06 16:17:54 +0300 MSK   eloquent_mendeleev
+94a344ec4e29        hello-world         2019-06-06 16:13:21 +0300 MSK   thirsty_fermat
+911f164d9c56        hello-world         2019-06-06 16:11:38 +0300 MSK   friendly_rosalind
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# 
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# 
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# 
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# 
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# 
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# ^C
+]0;root@3da6ad54596c: /root@3da6ad54596c:/# 
