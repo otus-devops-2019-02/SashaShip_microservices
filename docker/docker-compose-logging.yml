@@ -1,5 +1,4 @@
-version: '3'
-
+version: '3.3'
 services:
   zipkin:
     image: openzipkin/zipkin
@@ -7,22 +6,34 @@ services:
       - "9411:9411"
     networks:
       - front_net
-      - back_net 
+      - back_net
 
   fluentd:
-    build: ./fluentd
+    image: ${USER_NAME}/fluentd
     ports:
       - "24224:24224"
       - "24224:24224/udp"
 
   elasticsearch:
-    image: elasticsearch
+    image: elasticsearch:5.6
     expose:
       - 9200
     ports:
       - "9200:9200"
 
   kibana:
-    image: kibana
+    image: kibana:5.6.0
     ports:
-      - "8080:5601"
+      - "5601:5601"
+
+networks:
+  front_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+  back_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24

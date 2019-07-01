@@ -1,4 +1,3 @@
-
 version: '3.3'
 services:
   post_db:
@@ -6,71 +5,78 @@ services:
     volumes:
       - post_db:/data/db
     networks:
-      - back_net
+      back_net:
+        aliases:
+          - post_db
+          - comment_db
+      mon_net:
+        aliases:
+          - mon_post_db
+
   ui:
-    image: ${USERNAME}/ui:${UI_SERVICE_VERSION}
+    image: ${USER_NAME}/ui:${VERSION}
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
-      - POST_SERVICE_HOST=post
-      - POST_SERVICE_PORT=5000
-      - COMMENT_SERVICE_HOST=comment
-      - COMMENT_SERVICE_PORT=9292
     ports:
-      - ${UI}:9292/tcp
+      - 9292:9292/tcp
     networks:
-      - front_net
-    depends_on:
-      - post
+      front_net:
+      mon_net:
+        aliases:
+          - mon_ui
     logging:
       driver: "fluentd"
       options:
         fluentd-address: localhost:24224
         tag: service.ui
-#  post:
-    #build: ../src/post-py
- #   image: ${USERNAME}/post:${POST_SERVICE_VERSION}
-  #  networks:
-   #   - front_net
-    #  - back_net
+
   post:
-    image: ${USER_NAME}/post:${POST_SERVICE_VERSION}
+    image: ${USER_NAME}/post:${VERSION}
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
-      - POST_DATABASE_HOST=post_db
-      - POST_DATABASE=posts
-    depends_on:
-      - post_db
-    ports:
-      - "5000:5000"
+    networks:
+      front_net:
+        aliases:
+          - post
+      back_net:
+      mon_net:
+        aliases:
+          - mon_post
     logging:
       driver: "fluentd"
       options:
         fluentd-address: localhost:24224
         tag: service.post
-    networks:
-      - front_net
-      - back_net
-
 
   comment:
-    #container_name: sobones-comment-container
-    #build: ../src/comment
-    image: ${USERNAME}/comment:${COMMENT_SERVICE_VERSION}
+    image: ${USER_NAME}/comment:${VERSION}
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
-
     networks:
-      - front_net
-      - back_net
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: localhost:24224
-        tag: service.post
+      front_net:
+        aliases:
+          - comment
+      back_net:
+      mon_net:
+        aliases:
+          - mon_comment
 
 volumes:
   post_db:
 
 networks:
   front_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
   back_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+  mon_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.3.0/24
