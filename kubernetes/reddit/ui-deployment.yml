@@ -20,7 +20,7 @@ spec:
         component: ui
     spec:
       containers:
-      - image: sobones/ui
+      - image: sashaship/ui
         name: ui
         env:
         - name: ENV
