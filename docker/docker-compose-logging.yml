@@ -8,6 +8,10 @@ services:
       - front_net
       - back_net
 
+networks:
+  front_net:
+  back_net:
+
   fluentd:
     image: ${USER_NAME}/fluentd
     ports:
@@ -26,14 +30,4 @@ services:
     ports:
       - "5601:5601"
 
-networks:
-  front_net:
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.0.1.0/24
-  back_net:
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.0.2.0/24
+
